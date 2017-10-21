@@ -8,17 +8,17 @@ using std::cin;
 using std::endl;
 using std::vector;
 
-struct Volumes {
-	int one, two;
-	Volumes(int one_, int two_) : one(one_), two(two_) {};
+struct CupPair {
+	cup one, two;
+	CupPair(cup one_, cup two_) : one(one_), two(two_) {};
 };
 
-int duplicate(Volumes, vector<Volumes>);
+int duplicate(CupPair, vector<CupPair>);
 
 int main() {
 	int c1_size, c2_size, target, steps = 0;
-	vector<Volumes> queue;
-	vector<Volumes> checked;//keeps track of set of volumes that have been tested
+	vector<CupPair> queue;
+	vector<CupPair> checked;//keeps track of set of volumes that have been tested
 	cout << "Enter a size for the first cup in mL: ";
 	cin >> c1_size;
 	cout << "Enter a size for the second cup in mL: ";
@@ -27,15 +27,14 @@ int main() {
 	cin >> target;
 	cup c1(c1_size);
 	cup c2(c2_size);
-	Volumes volume(0, 0);
-	queue.push_back(volume);
+	CupPair root(c1, c2);
+	queue.push_back(root);
 	while (queue.size() > 0) {
-		volume = queue.front();//gets the next set of volumes from the queue
+		CupPair node = queue.front();//gets the next set of volumes from the queue
 		queue.erase(queue.begin());//removes it from the queue
-		if (volume.one != target || volume.two != target) {//if the cups don't have the target volume
-			if (duplicate(volume, checked) == 1) {//if the set of volumes has not been checked
+		if (node.one.current_volume != target || node.two.current_volume != target) {//if the cups don't have the target volume
+			if (duplicate(node, checked) == 1) {//if the set of volumes has not been checked
 				for (int i = 0; i < 6; i++) {
-					Volumes x = volume;
 					switch (i) {
 						case 0:
 						case 1:
@@ -45,7 +44,7 @@ int main() {
 						case 5:
 					}
 				}
-				checked.push_back(volume);//adds the volume to the checked list
+				checked.push_back(node);//adds the volume to the checked list
 			}
 			else {//if the set of volumes has been checked
 				
@@ -61,10 +60,10 @@ int main() {
 	return 0;
 }
 
-int duplicate(Volumes v, vector<Volumes> list) {
+int duplicate(CupPair a, vector<CupPair> list) {
 	int k = 0;//variable used to determine if a set of volumes has been checked
 	for (unsigned int i = 0; i < list.size(); i++) {//checks if the volume has been looked at already
-		if (v.one == list.at(i).one && v.two == list.at(i).two) {
+		if (a.one.current_volume == list.at(i).one.current_volume && a.two.current_volume == list.at(i).two.current_volume) {
 			k++;
 			break;
 		}
