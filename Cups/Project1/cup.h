@@ -9,9 +9,10 @@ class cup {
 		void empty() { current_volume = 0; }//empties the cup
 		void fill() { current_volume = capacity; }//fills the cup
 		void pour(cup&);
-		int current_volume;//current amount of water currently in the cup
+		//int current_volume;//current amount of water currently in the cup
 	private:
 		int capacity;//capacity of the cup
+		int current_volume;//current amount of water currently in the cup
 };
 
 #endif
